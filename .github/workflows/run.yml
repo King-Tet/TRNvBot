@@ -1,0 +1,40 @@
+name: 30-Minute Headless Automation
+
+on:
+  schedule:
+    # Runs every 30 minutes
+    - cron: '*/30 * * * *'
+  workflow_dispatch:
+    # Allows you to trigger the workflow manually from the GitHub UI for testing
+
+jobs:
+  run-automation:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install NPM Dependencies
+        run: npm install
+
+      - name: Install Playwright Browsers
+        # We only need chromium for this script
+        run: npx playwright install chromium --with-deps
+
+      - name: Run Automation Script
+        run: npm start
+
+      - name: Upload Screenshot Artifact (Optional)
+        # This saves the screenshot so you can view it in the GitHub Actions tab
+        uses: actions/upload-artifact@v4
+        if: always() # Upload even if the script fails
+        with:
+          name: debug-screenshot
+          path: result.png
+          retention-days: 3
