@@ -2,10 +2,12 @@ name: 30-Minute Headless Automation
 
 on:
   schedule:
-    # Runs every 30 minutes
     - cron: '*/30 * * * *'
   workflow_dispatch:
-    # Allows you to trigger the workflow manually from the GitHub UI for testing
+
+# Added environment variable to silence the Node 20 deprecation warning
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
 jobs:
   run-automation:
@@ -18,22 +20,20 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: '24' # Updated to Node 24
 
       - name: Install NPM Dependencies
         run: npm install
 
       - name: Install Playwright Browsers
-        # We only need chromium for this script
         run: npx playwright install chromium --with-deps
 
       - name: Run Automation Script
         run: npm start
 
-      - name: Upload Screenshot Artifact (Optional)
-        # This saves the screenshot so you can view it in the GitHub Actions tab
+      - name: Upload Screenshot Artifact
         uses: actions/upload-artifact@v4
-        if: always() # Upload even if the script fails
+        if: always() 
         with:
           name: debug-screenshot
           path: result.png
