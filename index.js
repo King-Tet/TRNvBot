@@ -16,7 +16,7 @@ chromium.use(stealth);
   });
   
   const page = await context.newPage();
-  const targetUrl = 'https://nowsecure.nl'; 
+  const targetUrl = 'https://r6.tracker.network/r6siege/profile/ubi/FeliXthEca8/matches'; 
 
   try {
     console.log(`Navigating to ${targetUrl}...`);
