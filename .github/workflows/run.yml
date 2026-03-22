@@ -5,13 +5,15 @@ on:
     - cron: '*/30 * * * *'
   workflow_dispatch:
 
-# Added environment variable to silence the Node 20 deprecation warning
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
 jobs:
   run-automation:
     runs-on: ubuntu-latest
+    
+    # ADD THIS LINE: This forces GitHub to kill the job if it hangs for 5 minutes
+    timeout-minutes: 5 
 
     steps:
       - name: Checkout Repository
@@ -20,7 +22,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '24' # Updated to Node 24
+          node-version: '24'
 
       - name: Install NPM Dependencies
         run: npm install
