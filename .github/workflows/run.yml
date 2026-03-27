@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     
     # ADD THIS LINE: This forces GitHub to kill the job if it hangs for 5 minutes
-    timeout-minutes: 5 
+    timeout-minutes: 2
 
     steps:
       - name: Checkout Repository
